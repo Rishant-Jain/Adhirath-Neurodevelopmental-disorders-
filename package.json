@@ -1,0 +1,15 @@
+{
+  "name": "adhirath",
+  "version": "1.0.0",
+  "description": "Adhirath - Full Stack Application",
+  "scripts": {
+    "start": "concurrently \"cd backend && npm run dev\" \"cd Frontend && npm start\" \"cd ai-service && python predict_api.py\"",
+    "install-all": "concurrently \"cd backend && npm install\" \"cd Frontend && npm install\"",
+    "backend": "cd backend && npm run dev",
+    "frontend": "cd Frontend && npm start",
+    "ai-service": "cd ai-service && python predict_api.py"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+} 

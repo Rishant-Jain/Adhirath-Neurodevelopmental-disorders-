@@ -1,0 +1,257 @@
+/* src/components/NewDashboard_AchievementsPage.css */
+/* Uses .new-dashboard-page, .new-dashboard-page-header, etc. */
+
+.new-dashboard-header-icon.achievements-header-icon {
+  background-color: #fef9c3; /* Light Yellow for trophy */
+  color: #eab308; /* Yellow/Gold */
+}
+
+/* Summary Banner */
+.achievements-summary-banner {
+  background: linear-gradient(135deg, #fef08a, #fde68a); /* Yellow gradient */
+  color: #713f12; /* Dark brown for text on yellow */
+  padding: 25px;
+  border-radius: 16px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+.achievements-summary-banner h2 {
+  font-size: 1.7em;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+}
+.summary-stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  font-size: 1.05em;
+  font-weight: 500;
+}
+.summary-stats div span {
+  display: block;
+  font-size: 1.8em;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.summary-icon {
+  font-size: 2.8em;
+  color: #ca8a04; /* Darker yellow */
+}
+
+/* Filter Navigation */
+.achievements-filter-nav {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+.achievements-filter-button {
+  background-color: #fff;
+  border: 1px solid #d1d5db; /* Light gray border */
+  color: #4b5563; /* Medium gray text */
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.95em;
+}
+.achievements-filter-button:hover {
+  border-color: #6b7280;
+  color: #1f2937;
+}
+.achievements-filter-button.active {
+  background-color: #8b5cf6; /* Purple */
+  color: white;
+  border-color: #8b5cf6;
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+}
+
+/* Badges Grid */
+.badges-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-bottom: 30px;
+}
+.badge-card {
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+  text-align: center;
+  position: relative;
+  border-left: 5px solid var(--card-accent-color, #e5e7eb); /* Accent color from JS */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.badge-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.09);
+}
+
+.badge-rarity-tag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: var(--card-accent-color, #e5e7eb);
+  color: #4b5563; /* Adjust if needed based on accent color */
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 0.7em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.badge-card.earned .badge-rarity-tag {
+    /* Example: Make text darker if cardColor is very light */
+    /* color: #1f2937; */
+}
+
+
+.badge-icon {
+  font-size: 3em;
+  margin-bottom: 12px;
+  line-height: 1;
+}
+.badge-title {
+  font-size: 1.3em;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 6px;
+}
+.badge-description {
+  font-size: 0.9em;
+  color: #6b7280;
+  margin-bottom: 15px;
+  min-height: 3em; /* Ensure some consistent height */
+}
+.badge-earned-date {
+  font-size: 0.85em;
+  color: #16a34a; /* Green */
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+.badge-points-earned {
+  font-size: 0.9em;
+  font-weight: 600;
+  color: #4ade80; /* Brighter Green */
+}
+.badge-progress-bar-container {
+  background-color: #e5e7eb;
+  border-radius: 20px;
+  height: 8px;
+  overflow: hidden;
+  margin: 0 auto 8px auto;
+  max-width: 80%;
+}
+.badge-progress-bar-fill {
+  height: 100%;
+  background-color: var(--card-accent-color, #a855f7); /* Use accent color */
+  border-radius: 20px;
+  transition: width 0.5s ease;
+}
+.badge-progress-text {
+  font-size: 0.8em;
+  color: #4b5563;
+  margin-bottom: 4px;
+}
+.badge-points-potential {
+  font-size: 0.9em;
+  font-weight: 500;
+  color: #78716c; /* Stone color */
+}
+
+/* Footer Message */
+.achievements-footer-message {
+  text-align: center;
+  padding: 25px;
+  background: linear-gradient(45deg, #fbcfe8, #fce7f3); /* Light pink gradient */
+  border-radius: 16px;
+  margin-bottom: 30px;
+}
+.achievements-footer-message h2 {
+  font-size: 1.5em;
+  color: #be185d; /* Dark pink */
+  margin-bottom: 8px;
+}
+.achievements-footer-message p {
+  font-size: 1em;
+  color: #9d174d; /* Darker pink */
+  margin-bottom: 15px;
+}
+.earn-more-badges-button {
+  background: linear-gradient(95deg, #db2777, #c026d3); /* Pink to Fuchsia gradient */
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 25px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.earn-more-badges-button:hover {
+  transform: translateY(-2px);
+}
+
+/* Next Challenge Section */
+.next-challenge-section {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+}
+.next-challenge-title {
+    font-size: 1.3em;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 15px;
+    text-align: center;
+}
+.next-challenge-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: #fff3e0; /* Light orange background */
+    padding: 15px;
+    border-radius: 12px;
+}
+.next-challenge-icon {
+    font-size: 2.5em;
+    background-color: #ffcc80; /* Orange */
+    color: #e65100; /* Dark orange */
+    padding: 10px;
+    border-radius: 10px;
+}
+.next-challenge-details h4 {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #bf360c; /* Darker orange/brown */
+    margin: 0 0 5px 0;
+}
+.next-challenge-details p {
+    font-size: 0.9em;
+    color: #d84315; /* Orange */
+    margin-bottom: 8px;
+}
+.next-challenge-progress-bar-container {
+    background-color: #ffe0b2; /* Lighter orange track */
+    border-radius: 20px;
+    height: 8px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+.next-challenge-progress-bar-fill {
+    height: 100%;
+    background-color: #fb8c00; /* Bright orange fill */
+    border-radius: 20px;
+}
+.next-challenge-progress-text {
+    font-size: 0.8em;
+    color: #bf360c;
+    text-align: right;
+}

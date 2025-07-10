@@ -1,0 +1,133 @@
+/* DashboardLayout.css */
+
+.dashboard-layout-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  background-color: #f7f8fc;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.dashboard-main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  margin-left: 0;
+  transition: margin-left 0.3s ease;
+}
+
+/* Add margin when sidebar is open on desktop */
+@media (min-width: 1024px) {
+  .dashboard-main-content {
+    margin-left: 256px;
+  }
+}
+
+.dashboard-header {
+  height: 64px;
+  padding: 0 24px;
+  background-color: white;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.dashboard-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  height: calc(100vh - 64px);
+}
+
+.dashboard-content-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Menu button styles */
+.menu-button {
+  padding: 8px;
+  border-radius: 8px;
+  color: #6b7280;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.menu-button:hover {
+  color: #374151;
+  background-color: #f3f4f6;
+}
+
+.menu-button.hidden {
+  display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .dashboard-content-container {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    height: 56px;
+    padding: 0 16px;
+  }
+
+  .dashboard-content {
+    height: calc(100vh - 56px);
+  }
+
+  .dashboard-content-container {
+    padding: 16px;
+  }
+}
+
+/* Utility classes */
+.flex-1 {
+  flex: 1;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Ensure content is properly contained */
+.dashboard-content > * {
+  max-width: 100%;
+}
+
+/* Fix iframe container overflow */
+.aspect-video {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.aspect-video iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}

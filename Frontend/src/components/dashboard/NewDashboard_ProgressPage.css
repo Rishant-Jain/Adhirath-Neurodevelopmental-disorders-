@@ -1,0 +1,110 @@
+/* src/components/NewDashboard_ProgressPage.css */
+
+.new-dashboard-header-icon.progress-header-icon {
+  background-color: #fef9c3; /* Light Yellow for trophy */
+  color: #eab308; /* Yellow/Gold */
+}
+
+/* REPLACEMENT for the old orange banner */
+.progress-summary-card {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 16px;
+  margin-bottom: 30px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.07);
+  text-align: center;
+}
+.summary-card-title {
+  font-size: 1.8em;
+  font-weight: 700;
+  margin: 0 0 5px 0;
+  color: #1f2937;
+}
+.summary-card-subtitle {
+  font-size: 1em;
+  margin-bottom: 20px;
+  color: #6b7280;
+}
+.summary-card-stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  color: #374151;
+}
+.summary-stat-item {
+  font-size: 0.95em;
+  font-weight: 500;
+}
+.summary-stat-item span {
+  display: block;
+  font-size: 1.8em;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.summary-stat-icon {
+  font-size: 2.5em;
+  color: #a855f7; /* Use main purple for the icon */
+}
+
+/* Progress Categories Grid (Circular Progress) */
+.progress-categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 25px;
+  margin-bottom: 35px;
+}
+.progress-category-card {
+  background-color: #fff;
+  padding: 25px 20px;
+  border-radius: 16px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.07);
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+.progress-category-card:hover {
+  transform: translateY(-3px);
+}
+.progress-circle-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 15px auto;
+}
+.progress-circle-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg); /* Start from top */
+}
+.progress-circle-bg {
+  fill: none;
+  stroke: #e5e7eb; /* Light gray track */
+  stroke-width: 10;
+}
+.progress-circle-fg {
+  fill: none;
+  stroke-width: 10;
+  stroke-linecap: round; /* Rounded ends for the progress arc */
+  transition: stroke-dashoffset 0.6s ease-out;
+}
+.progress-circle-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5em;
+  font-weight: 700;
+  color: #1f2937;
+}
+.progress-category-label {
+  font-size: 1.2em;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 5px;
+}
+.progress-category-subtext {
+  font-size: 0.9em;
+  color: #6b7280;
+}
+
+/* Styles for "This Week's Adventure" have been removed for a cleaner UI */

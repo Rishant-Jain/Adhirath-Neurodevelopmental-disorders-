@@ -1,0 +1,75 @@
+/* NewDashboard_LearningPathPage.css */
+
+.pathway-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.pathway-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.pathway-icon {
+  background-color: #f3f4f6;
+  border-radius: 9999px;
+  padding: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pathway-icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* Category colors */
+.text-blue-500 { color: #3b82f6; }
+.text-purple-500 { color: #8b5cf6; }
+.text-green-500 { color: #10b981; }
+.text-yellow-500 { color: #f59e0b; }
+.text-pink-500 { color: #ec4899; }
+.text-indigo-500 { color: #6366f1; }
+.text-teal-500 { color: #14b8a6; }
+.text-red-500 { color: #ef4444; }
+.text-orange-500 { color: #f97316; }
+
+/* Loading spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Responsive layout */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .pathway-card {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .p-6 {
+    padding: 1rem;
+  }
+  
+  .pathway-card {
+    padding: 1rem;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+  }
+}

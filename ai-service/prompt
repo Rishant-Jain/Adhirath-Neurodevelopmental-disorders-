@@ -1,0 +1,1 @@
+uvicorn predict_api:app --reload
