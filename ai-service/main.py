@@ -18,34 +18,33 @@ app = FastAPI()
 # Enable CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, replace with specific origins
+    allow_origins=["*"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Load the model and encoders
 try:
-    # Load the model
-    model_file = 'rf_multilabel_model.pkl'  # Use the newly trained model
+   
+    model_file = 'rf_multilabel_model.pkl'  
     if not os.path.exists(model_file):
         raise FileNotFoundError(f"Model file {model_file} not found")
     
     model = joblib.load(model_file)
     logger.info(f"Loaded model from {model_file}")
     
-    # Print model information
+    
     n_features = model.estimators_[0].n_features_in_
     logger.info(f"Model expects {n_features} features")
     
     if hasattr(model.estimators_[0], 'feature_names_in_'):
         logger.info(f"Model feature names: {list(model.estimators_[0].feature_names_in_)}")
     
-    # Load all label encoders
+    
     encoders = {}
     encoders_path = Path('label_encoders_rf')
     
-    # Define feature name mappings
+    
     feature_name_mappings = {
         'Language_Proficiency': ['Language_Proficiency', 'Verbal IQ - Spoken Language'],
         'Communication_Skills': ['Communication_Skills', 'Verbal IQ - Express Feelings'],
@@ -64,12 +63,12 @@ try:
         'Education_Level': ['Education_Level', 'Education Level']
     }
     
-    # Load encoders with name mapping
+    
     loaded_features = []
     for feature, possible_names in feature_name_mappings.items():
         encoder_found = False
         for name in possible_names:
-            # Try different encoder filename patterns
+            
             possible_patterns = [
                 f"{name}_encoder.pkl",
                 f"{name.replace('_', ' ')}_encoder.pkl",
@@ -94,7 +93,7 @@ try:
         if not encoder_found:
             logger.warning(f"No encoder found for feature {feature}")
     
-    # Load target encoder
+    
     target_encoder_path = encoders_path / "target_mlb.pkl"
     if target_encoder_path.exists():
         encoders['target'] = joblib.load(target_encoder_path)
@@ -147,18 +146,18 @@ def predict(data: AssessmentData):
         logger.info("Received prediction request")
         logger.debug(f"Input data: {data.dict()}")
         
-        # Convert input data to dictionary
+       
         input_data = data.dict()
         
-        # Initialize feature vector
+        
         encoded_features = []
         missing_encoders = []
         invalid_values = {}
         
-        # Log available encoders
+    
         logger.info(f"Available encoders: {list(encoders.keys())}")
         
-        # Define the expected feature order
+        
         feature_order = [
             'Language_Proficiency', 'Communication_Skills', 'Diagnosis',
             'Severity', 'Medical_Conditions', 'Independence_Level',
@@ -167,7 +166,7 @@ def predict(data: AssessmentData):
             'Social_Interaction', 'Age_Group', 'Education_Level'
         ]
         
-        # Encode each feature in the correct order
+        
         for feature in feature_order:
             value = input_data.get(feature)
             if not value:
@@ -183,10 +182,10 @@ def predict(data: AssessmentData):
                 
             try:
                 logger.debug(f"Encoding feature {feature} with value {value}")
-                    encoded_value = encoders[feature].transform([value])[0]
-                    encoded_features.append(encoded_value)
+                encoded_value = encoders[feature].transform([value])[0]
+                encoded_features.append(encoded_value)
                 logger.debug(f"Successfully encoded {feature} to {encoded_value}")
-                except Exception as e:
+            except Exception as e:
                 logger.error(f"Failed to encode feature {feature} with value {value}: {str(e)}")
                 invalid_values[feature] = {
                     'provided': value,
@@ -213,12 +212,12 @@ def predict(data: AssessmentData):
                 }
                     )
         
-        # Make prediction
+        
         encoded_features = np.array(encoded_features).reshape(1, -1)
         logger.info(f"Encoded features shape: {encoded_features.shape}")
         logger.debug(f"Encoded features: {encoded_features}")
         
-        # Check feature count
+        
         n_features = model.estimators_[0].n_features_in_
         if encoded_features.shape[1] != n_features:
             logger.error(f"Feature count mismatch: got {encoded_features.shape[1]}, expected {n_features}")
@@ -256,7 +255,7 @@ def predict(data: AssessmentData):
                 }
             )
         
-        # Get predicted pathways using MultiLabelBinarizer
+        
         if 'target' not in encoders:
             logger.error("Target encoder not found")
             raise HTTPException(
@@ -265,17 +264,17 @@ def predict(data: AssessmentData):
             )
             
         mlb = encoders['target']
-        threshold = 0.3  # Adjust this threshold as needed
+        threshold = 0.3  
         
-        # Convert probabilities to binary predictions based on threshold
+        
         binary_predictions = (prediction_proba >= threshold).astype(int)
         logger.debug(f"Binary predictions: {binary_predictions}")
         
-        # Transform binary predictions back to pathway labels
+        
         predicted_pathways = mlb.inverse_transform(binary_predictions)[0]
         logger.info(f"Predicted pathways: {predicted_pathways}")
         
-        # Calculate confidence scores for predicted pathways
+        
         confidence_scores = {}
         for pathway, score in zip(mlb.classes_, prediction_proba[0]):
             if score >= threshold:

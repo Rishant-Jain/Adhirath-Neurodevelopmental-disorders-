@@ -7,7 +7,17 @@ import os
 from typing import List
 from pymongo import MongoClient
 
-# Load model and encoders
+# --- NEW IMPORTS FOR PATCH ---
+from sklearn.multioutput import MultiOutputClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
+
+app = FastAPI()
+
+# -------------------------------
+# Load Model + Patch Missing Attributes
+# -------------------------------
+
 MODEL_PATH = "./rf_multilabel_model.pkl"
 ENCODERS_DIR = "./label_encoders_rf"
 
@@ -17,6 +27,39 @@ try:
 except Exception as e:
     raise RuntimeError(f"❌ Failed to load model: {e}")
 
+
+# --- FIX: Patch function to add missing monotonic_cst ---
+def patch_monotonic_cst(obj):
+    """
+    Adds monotonic_cst=None to any DecisionTreeClassifier
+    inside RandomForest or MultiOutputClassifier models.
+    """
+    # Direct DecisionTreeClassifier
+    if isinstance(obj, DecisionTreeClassifier):
+        if not hasattr(obj, "monotonic_cst"):
+            obj.monotonic_cst = None
+        return
+
+    # MultiOutputClassifier (wrapper)
+    if isinstance(obj, MultiOutputClassifier):
+        for est in obj.estimators_:
+            patch_monotonic_cst(est)
+        return
+
+    # RandomForest or anything with estimators_
+    if hasattr(obj, "estimators_"):
+        for est in obj.estimators_:
+            patch_monotonic_cst(est)
+
+
+# --- APPLY PATCH ---
+patch_monotonic_cst(model)
+print("🩹 Patched model: Added missing monotonic_cst attributes")
+
+
+# -------------------------------
+# Load Encoders
+# -------------------------------
 encoders = {}
 for filename in os.listdir(ENCODERS_DIR):
     if filename.endswith(".pkl"):
@@ -27,24 +70,33 @@ for filename in os.listdir(ENCODERS_DIR):
         except Exception as e:
             print(f"❌ Failed to load encoder {feature_name}: {e}")
 
-# MongoDB connection (optional)
-client = MongoClient("mongodb://localhost:27017/")
+
+# -------------------------------
+# MongoDB
+# -------------------------------
+import os
+MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017/')
+client = MongoClient(MONGODB_URI)
 db = client.adhirath
 db_collection = db.assessments
 
-# FastAPI app initialization
-app = FastAPI()
 
-# CORS middleware
+
+# -------------------------------
+# CORS
+# -------------------------------
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # You can replace this with your frontend's URL for security
+    allow_origins=["*"],     # Replace "*" with frontend URL later
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Input model
+
+# -------------------------------
+# Input Model
+# -------------------------------
 class AssessmentInput(BaseModel):
     Language_Proficiency: str = Field(..., alias="Verbal IQ - Spoken Language")
     Initiates_Conversation: str = Field(..., alias="Verbal IQ - Initiates Conversation")
@@ -66,7 +118,10 @@ class AssessmentInput(BaseModel):
     class Config:
         populate_by_name = True
 
-# Prediction route
+
+# -------------------------------
+# Prediction Route
+# -------------------------------
 @app.post("/predict")
 def predict_pathway(data: AssessmentInput):
     try:
@@ -83,12 +138,13 @@ def predict_pathway(data: AssessmentInput):
 
         print("✅ Encoded input:", encoded_input)
 
-        # Convert to DataFrame for prediction
+        # Convert to DataFrame
         input_df = pd.DataFrame([encoded_input])
+
+        # --- Prediction ---
         prediction = model.predict(input_df)[0].tolist()
         print("📢 Prediction:", prediction)
 
-        # Map predictions to pathway names
         pathways = [
             "Adaptive Self-Care Training",
             "Attention & Behavioral Focus Training",
@@ -101,9 +157,10 @@ def predict_pathway(data: AssessmentInput):
             "Social Communication Intervention",
             "Speech Therapy"
         ]
+
         recommended = [pathways[i] for i, val in enumerate(prediction) if val == 1]
 
-        # Optionally save input and prediction to MongoDB
+        # Save to DB (optional)
         db_collection.insert_one({
             "input": input_dict,
             "prediction": recommended

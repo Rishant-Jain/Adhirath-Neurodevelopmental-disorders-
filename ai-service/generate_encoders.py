@@ -4,7 +4,7 @@ from sklearn.preprocessing import LabelEncoder, MultiLabelBinarizer
 import joblib
 import os
 
-# Define the feature mappings and their possible values
+
 feature_mappings = {
     'Language_Proficiency': [
         'Rarely speaks or responds',
@@ -97,7 +97,7 @@ feature_mappings = {
     ]
 }
 
-# Possible pathways for MultiLabelBinarizer
+
 pathways = [
     'Adaptive Self-Care Training',
     'Attention & Behavioral Focus Training',
@@ -112,19 +112,19 @@ pathways = [
 ]
 
 def create_and_save_encoders():
-    # Create directory if it doesn't exist
+    
     os.makedirs('label_encoders_rf', exist_ok=True)
     
-    # Create and save label encoders for each feature
+    
     for feature, values in feature_mappings.items():
         le = LabelEncoder()
         le.fit(values)
         joblib.dump(le, f'label_encoders_rf/{feature}_encoder.pkl')
         print(f'Created encoder for {feature} with {len(values)} values')
     
-    # Create and save MultiLabelBinarizer for pathways
+    
     mlb = MultiLabelBinarizer()
-    mlb.fit([pathways])  # Fit with list of all possible pathways
+    mlb.fit([pathways])  
     joblib.dump(mlb, 'label_encoders_rf/target_mlb.pkl')
     print(f'Created MultiLabelBinarizer for pathways with {len(pathways)} classes')
 

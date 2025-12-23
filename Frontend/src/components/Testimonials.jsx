@@ -24,7 +24,9 @@ const Testimonials = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/reviews');
+        const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+        const response = await fetch(`${API_URL}/api/reviews`);
+
         if (!response.ok) {
           throw new Error('Failed to fetch reviews');
         }

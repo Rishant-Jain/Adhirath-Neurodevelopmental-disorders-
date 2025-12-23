@@ -34,8 +34,9 @@ const SignupPage = () => {
         client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
         callback: async (response) => {
           try {
+            const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
             // Send the Google token to your backend
-            const backendResponse = await fetch('http://localhost:8080/api/auth/google', {
+            const backendResponse = await fetch(`${API_URL}/api/auth/google`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -100,9 +101,10 @@ const SignupPage = () => {
       return;
     }
     setError('');
-    
+
     try {
-      const response = await fetch('http://localhost:8080/api/auth/signup', {
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+      const response = await fetch(`${API_URL}/api/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

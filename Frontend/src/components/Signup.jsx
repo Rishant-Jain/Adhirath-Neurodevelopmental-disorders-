@@ -35,8 +35,9 @@ const Signup = () => {
     }
 
     try {
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
       const response = await axios.post(
-        'http://localhost:8080/api/auth/signup',
+        `${API_URL}/api/auth/signup`,
         formData,
         {
           headers: {
@@ -126,16 +127,15 @@ const Signup = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${
-                isLoading
+              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${isLoading
                   ? 'bg-indigo-400'
                   : 'bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-              }`}
+                }`}
             >
               {isLoading ? 'Signing up...' : 'Sign up'}
             </button>
           </div>
-          
+
           <div className="text-sm text-center">
             <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
               Already have an account? Sign in
