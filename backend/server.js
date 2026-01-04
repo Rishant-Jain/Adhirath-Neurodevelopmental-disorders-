@@ -34,9 +34,9 @@ app.use('/api/reviews', reviewRoutes);
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ 
+  res.status(500).json({
     message: 'Something went wrong!',
-    error: err.message 
+    error: err.message
   });
 });
 
