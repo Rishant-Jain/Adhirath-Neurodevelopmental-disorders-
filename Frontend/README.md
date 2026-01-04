@@ -68,3 +68,63 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## Deployment to Vercel
+
+This application is configured for deployment on Vercel with the backend and AI service hosted on Render.
+
+### Environment Variables
+
+Before deploying, you need to set up the following environment variables:
+
+- `REACT_APP_API_URL` - Backend API URL (Production: https://adhirath.onrender.com)
+- `REACT_APP_AI_URL` - AI Service URL (Production: https://adhirath-ai.onrender.com)
+
+### Local Production Build
+
+To test the production build locally:
+
+```bash
+npm run build
+npx serve -s build
+```
+
+### Deploy to Vercel
+
+1. **Push to GitHub**
+   ```bash
+   git add .
+   git commit -m "Configure for Vercel deployment"
+   git push origin main
+   ```
+
+2. **Import to Vercel**
+   - Go to [Vercel Dashboard](https://vercel.com/dashboard)
+   - Click "Add New Project"
+   - Import your GitHub repository
+   - Vercel will auto-detect Create React App settings
+
+3. **Configure Environment Variables**
+   - In Vercel project settings, go to "Environment Variables"
+   - Add the following variables:
+     - `REACT_APP_API_URL` = `https://adhirath.onrender.com`
+     - `REACT_APP_AI_URL` = `https://adhirath-ai.onrender.com`
+   - Apply to Production, Preview, and Development environments
+
+4. **Deploy**
+   - Click "Deploy"
+   - Vercel will build and deploy your application
+   - You'll receive a URL like `https://your-app.vercel.app`
+
+### CORS Configuration
+
+**Important:** After deployment, ensure your backend and AI service on Render allow requests from your Vercel domain:
+
+- Update CORS settings to include `https://your-app.vercel.app`
+- Also include `https://*.vercel.app` for preview deployments
+
+### Troubleshooting
+
+- **Build fails:** Check that all dependencies are in `package.json`
+- **API not connecting:** Verify environment variables are set correctly in Vercel
+- **CORS errors:** Update backend CORS configuration to allow Vercel domain
